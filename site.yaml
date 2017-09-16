@@ -1,0 +1,13 @@
+---
+- name: configure workstation
+  hosts: all
+
+  vars_files:
+  - ./config.yaml
+
+  roles:
+#  - common
+  - vagrant
+#  - slack
+#  - pycharm
+
