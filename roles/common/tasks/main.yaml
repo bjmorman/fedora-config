@@ -1,0 +1,38 @@
+- name: ensure pre-requisites installed
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+  - "{{ pre_req_packages }}"
+
+- name: ensure repositories exist
+  yum_repository:
+    name: "{{ item.value.name }}"
+    description: "{{ item.value.description }}"
+    baseurl: "{{ item.value.baseurl }}"
+    enabled: "{{ item.value.enabled }}"
+    gpgcheck: "{{ item.value.gpgcheck }}"
+    gpgkey: "{{ item.value.gpgkey }}"
+    repo_gpgcheck: "{{ item.value.repo_gpgcheck }}"
+  with_dict: "{{ repos }}"
+
+- name: ensure apps installed
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+  - "{{ main_packages }}"
+
+- name: ensure ruby gems installed
+  gem:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - "{{ ruby_gems }}"
+
+- name: ensure service state
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items: "{{ managed_services }}"
