@@ -1,0 +1,28 @@
+- name: check for slack
+  dnf:
+    list: slack
+  register: status_slack
+
+- name: download slack
+  get_url:
+    url: "{{ slack_download_url_prefix }}-{{ slack_version }}-{{ slack_release }}.x86_64.rpm"
+    dest: "/tmp/slack-{{ slack_version }}-{{ slack_release }}.x86_64.rpm"
+    force: yes  
+  register: status_slack_dl
+  when: 
+  - status_slack.results|length == 0
+  - status_slack.results is defined
+
+- name: install slack
+  dnf:
+    name: "/tmp/slack-{{ slack_version }}-{{ slack_release }}.x86_64.rpm"
+    state: present
+  when: 
+  - status_slack.results is defined
+  - status_slack.results|length == 0 
+  - status_slack_dl.skipped is not defined
+
+- name: cleanup slack rpm
+  file:
+    path: "/tmp/slack-{{ slack_version }}-{{ slack_release }}.x86_64.rpm"
+    state: absent

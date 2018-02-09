@@ -1,8 +1,0 @@
----
-- name: configure workstation
-  hosts: all
-
-  tasks:
-  - name: include roles
-    include_role:
-      name: fedora-config

@@ -1,0 +1,11 @@
+vagrant_version: 2.0.2
+
+vagrant_plugins:
+- winrm-fs
+- vagrant-hosts
+#- vagrant-libvirt
+- vagrant-persistent-storage
+- winrm
+- winrm-elevated
+- vagrant-dsc
+- vagrant-vcenter

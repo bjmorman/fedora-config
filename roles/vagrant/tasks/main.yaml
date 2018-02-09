@@ -1,0 +1,45 @@
+- name: check for vagrant
+  command: ls /opt/
+  register: status_vagrant
+  changed_when: status_vagrant != status_vagrant
+
+- name: download vagrant
+  get_url:
+    url: "https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.rpm"
+    dest: "/tmp/vagrant_{{ vagrant_version }}_x86_64.rpm"
+    force: yes  
+  when: "'vagrant' not in status_vagrant.stdout_lines"
+
+- name: verify vagrant rpm
+  stat:
+    path: "/tmp/vagrant_{{ vagrant_version }}_x86_64.rpm"
+  when: "'vagrant' not in status_vagrant.stdout_lines"
+  register: status_vagrant_rpm
+
+- name: ensure vagrant installed
+  dnf:
+    name: "/tmp/vagrant_{{ vagrant_version }}_x86_64.rpm"
+    state: present
+  when:
+  - "'vagrant' not in status_vagrant.stdout_lines"
+  - status_vagrant_rpm is defined
+
+- name: cleanup vagrant rpm
+  file:
+    path: "/tmp/vagrant_{{ vagrant_version }}_x86_64.rpm"
+    state: absent
+
+- name: ensure vagrant plugins installed
+  shell: >
+    vagrant plugin list | grep -q {{ item }};
+    if [ $? = 1 ];
+    then vagrant plugin install {{ item }};
+    fi
+  become: true
+  become_user: "{{ non_root_user }}"
+  with_items: "{{ vagrant_plugins }}"
+  register: status_vagrant_plugins
+  changed_when: status_vagrant_plugins.stdout.find('Installed') != -1
+  when:
+  - non_root_user is defined
+  - non_root_user != ""
