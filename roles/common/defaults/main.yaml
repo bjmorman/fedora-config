@@ -15,6 +15,14 @@ repos:
     gpgcheck: 1
     gpgkey: https://dl-ssl.google.com/linux/linux_signing_key.pub
     repo_gpgcheck: 1
+  microsoft:
+    name: microsoft
+    description: Microsoft repository
+    baseurl: https://packages.microsoft.com/rhel/7/prod/
+    enabled: 1
+    gpgcheck: 1
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+    repo_gpgcheck: 1
   virtualbox:
     name: virtualbox
     description: Virtualbox repository
@@ -35,28 +43,41 @@ pre_req_packages:
 - gnome-tweak-tool
 - icedtea-web
 - java-1.8.0-openjdk
+- jq
 - kernel-devel
 - kernel-headers
+- krb5-user
+- krb5-workstation
+- libffi-devel
 - libgomp
 - libselinux-python
 - make
 - net-tools
+- openssl-devel
 - patch
+- python-devel
 - python-dnf
 - qt
+- redhat-rpm-config
 - ruby
 - rubygems
+- xsel
 - zypper
 
 main_packages:
 - '@kde-desktop'
 - ansible
 - docker-ce
+- git
+- gimp
 - gnome-screensaver
 - gnome-tweak-tool
 - google-chrome-stable
-- git
+- kleopatra
 - libreoffice-base
+- openvpn
+- powershell
+- seahorse
 - switchdesk-gui
 - tigervnc
 - tmux
@@ -73,5 +94,3 @@ managed_services:
 - docker
 - firewalld
 - fstrim.timer
-
-
