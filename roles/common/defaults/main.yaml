@@ -31,6 +31,14 @@ repos:
     gpgcheck: 1
     gpgkey: https://www.virtualbox.org/download/oracle_vbox.asc
     repo_gpgcheck: 1
+  vscode:
+    name: vscode
+    description: Visual Studio Code repository
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    enabled: 1
+    gpgcheck: 1
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+    repo_gpgcheck: 1
 
 pre_req_packages:
 - binutils
@@ -67,6 +75,7 @@ pre_req_packages:
 main_packages:
 - '@kde-desktop'
 - ansible
+- code
 - docker-ce
 - git
 - gimp
@@ -77,6 +86,7 @@ main_packages:
 - libreoffice-base
 - openvpn
 - powershell
+- remmina
 - seahorse
 - switchdesk-gui
 - tigervnc

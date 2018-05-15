@@ -6,8 +6,8 @@
   - ./config.yaml
 
   roles:
-#  - common
+  - common
   - vagrant
-#  - slack
+  - slack
 #  - pycharm
 
