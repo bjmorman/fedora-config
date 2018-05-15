@@ -94,4 +94,3 @@ managed_services:
 - docker
 - firewalld
 - fstrim.timer
-
