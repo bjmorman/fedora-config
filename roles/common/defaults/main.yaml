@@ -91,7 +91,7 @@ main_packages:
 - switchdesk-gui
 - tigervnc
 - tmux
-- VirtualBox-5.1
+- VirtualBox-5.2
 - xfreerdp
 
 ruby_gems:
