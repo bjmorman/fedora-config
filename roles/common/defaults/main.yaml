@@ -54,7 +54,7 @@ pre_req_packages:
 - jq
 - kernel-devel
 - kernel-headers
-- krb5-user
+- krb5-devel
 - krb5-workstation
 - libffi-devel
 - libgomp
