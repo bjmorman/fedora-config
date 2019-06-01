@@ -1,4 +1,4 @@
-repos:
+yum_repos:
   docker-ce-stable:
     name: docker-ce-stable
     description: Docker-CE repository
@@ -40,7 +40,13 @@ repos:
     gpgkey: https://packages.microsoft.com/keys/microsoft.asc
     repo_gpgcheck: 1
 
-pre_req_packages:
+flatpak_repos:
+  flathub:
+    name: flathub
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: system
+
+pre_req_yum_packages:
 - binutils
 - dkms
 - dnf-plugins-core
@@ -58,13 +64,13 @@ pre_req_packages:
 - krb5-workstation
 - libffi-devel
 - libgomp
-- libselinux-python
+- libselinux-python3
 - make
 - net-tools
 - openssl-devel
 - patch
-- python-devel
-- python-dnf
+- python3-devel
+- python3-dnf
 - qt
 - redhat-rpm-config
 - ruby
@@ -72,9 +78,8 @@ pre_req_packages:
 - xsel
 - zypper
 
-main_packages:
+yum_packages:
 - '@kde-desktop'
-- ansible
 - code
 - docker-ce
 - git
@@ -91,8 +96,13 @@ main_packages:
 - switchdesk-gui
 - tigervnc
 - tmux
-- VirtualBox-5.2
+- VirtualBox-6.0
 - xfreerdp
+
+flatpaks:
+  pycharm:
+    name: com.jetbrains.PyCharm-Community
+    remote: flathub
 
 ruby_gems:
 - hiera-eyaml

@@ -1,11 +1,4 @@
-- name: ensure pre-requisites installed
-  dnf:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-  - "{{ pre_req_packages }}"
-
-- name: ensure repositories exist
+- name: ensure yum repositories exist
   yum_repository:
     name: "{{ item.value.name }}"
     description: "{{ item.value.description }}"
@@ -14,25 +7,49 @@
     gpgcheck: "{{ item.value.gpgcheck }}"
     gpgkey: "{{ item.value.gpgkey }}"
     repo_gpgcheck: "{{ item.value.repo_gpgcheck }}"
-  with_dict: "{{ repos }}"
+  with_dict: "{{ yum_repos }}"
+  become: yes
 
-- name: ensure apps installed
-  dnf:
+- name: ensure flatpak repositories exist
+  flatpak_remote:
+    name: "{{ item.value.name }}"
+    state: present
+    flatpakrepo_url: "{{ item.value.flatpakrepo_url }}"
+    method: "{{ item.value.method }}"
+  with_dict: "{{ flatpak_repos }}"
+  become: yes
+
+- name: ensure pre-requisites installed
+  yum:
     name: "{{ item }}"
     state: latest
-  with_items:
-  - "{{ main_packages }}"
+  loop: "{{ pre_req_yum_packages }}"
+  become: yes
+
+- name: ensure apps installed
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ yum_packages }}"
+  become: yes
+
+- name: ensure flatpaks installed
+  flatpak:
+    name: "{{ item.value.name }}"
+    repo: "{{ item.value.remote }}"
+    state: present
+  with_dict: "{{ flatpaks }}"
 
 - name: ensure ruby gems installed
   gem:
     name: "{{ item }}"
     state: present
-  with_items:
-  - "{{ ruby_gems }}"
+  loop: "{{ ruby_gems }}"
 
 - name: ensure service state
   service:
     name: "{{ item }}"
     enabled: yes
     state: started
-  with_items: "{{ managed_services }}"
+  loop: "{{ managed_services }}"
+  become: yes
